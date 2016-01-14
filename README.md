@@ -10,3 +10,7 @@ The new service will include:
 	whitelist
 	cloudwatch
 
+Prerequisites:
+
+	- brew
+	- a valid p12 cert: /etc/pki/cert.p12
