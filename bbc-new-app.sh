@@ -23,7 +23,7 @@ git init
 hub create bbc/${COMPONENT_NAME}
 
 printf "\n${PURPLE}===> Fetching scalatra template for your new project...${NOCOLOUR}\n"
-git remote add upstream https://github.com/alinaboghiu/scalatra-skeleton
+git remote add upstream git@github.com:alinaboghiu/scalatra-skeleton.git
 git pull upstream master
 
 mv ScalatraSkeletonStacks.patch ${COMPONENT_NAME}.patch
@@ -44,7 +44,7 @@ printf "\n${PURPLE}===> Your new repo is ready at ${GREEN}https://github.com/bbc
 
 printf "${GREEN}===> Creating cloud formation templates${NOCOLOUR}\n"
 rm -rf cps-stacks
-git clone https://github.com/bbc/cps-stacks && cd cps-stacks
+git clone git@github.com:bbc/cps-stacks.git && cd cps-stacks
 patch -p0 < "../${COMPONENT_NAME}/${COMPONENT_NAME}.patch"
 git add src/main/resources/*
 git add src/main/scala/bbc/cps/Stacks.scala
@@ -75,7 +75,7 @@ else
 fi
 
 COSMOS_PAYLOAD="{\"project_name\": \"${COSMOS_PROJECT}\", \"name\": \"${COMPONENT_NAME}\", \"type\": \"service\"}"
-curl --cert /etc/pki/cert.p12:cert -i -H "Accept: application/json" -H "Content-Type: application/json" -X POST -d "${COSMOS_PAYLOAD}" https://api.live.bbc.co.uk/cosmos/components/create
+curl --cert /etc/pki/client.p12:client -i -H "Accept: application/json" -H "Content-Type: application/json" -X POST -d "${COSMOS_PAYLOAD}" https://api.live.bbc.co.uk/cosmos/components/create
 wait
 
 sbt -Dcom.ning.http.client.AsyncHttpClientConfig.useProxyProperties=true run
@@ -84,5 +84,3 @@ cd ..
 rm -rf csp-stacks
 
 printf "/n ${GREEN}Created Application Stacks for your new application${NOCOLOUR}\n"
-
-
